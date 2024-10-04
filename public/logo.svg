@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="1080" height="1080" viewBox="0 0 1080 1080" xml:space="preserve">
+<desc>Created with Fabric.js 5.2.4</desc>
+<defs>
+</defs>
+<g transform="matrix(1 0 0 1 540 540)" id="7cda91c8-38b2-4e1b-aeff-23194fe51410"  >
+<rect style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-rule: nonzero; opacity: 1; visibility: hidden;" vector-effect="non-scaling-stroke"  x="-540" y="-540" rx="0" ry="0" width="1080" height="1080" />
+</g>
+<g transform="matrix(1 0 0 1 540 540)" id="97560e9b-3a0f-4814-b1f7-d79b2d932a6a"  >
+</g>
+<g transform="matrix(0 0 0 0 0 0)"  >
+<g style=""   >
+</g>
+</g>
+<g transform="matrix(0.13 0 0 -0.13 534.38 432.38)"  >
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(102,50,166); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  transform=" translate(-2453.48, -3544.27)" d="M 2385 4597 C 2363 4584 1988 4378 1552 4140 C 1116 3901 763 3703 767 3699 C 778 3688 1114 3503 1824 3115 L 2443 2778 L 2475 2793 C 2501 2805 3491 3345 3763 3495 L 3830 3532 L 3831 3023 C 3831 2552 3833 2484 3842 2475 C 3845 2472 4052 2467 4113 2469 L 4140 2470 L 4140 3078 C 4140 3412 4136 3690 4132 3696 C 4128 3702 3860 3853 3535 4030 C 2568 4560 2456 4620 2440 4620 C 2432 4620 2407 4609 2385 4597 z" stroke-linecap="round" />
+</g>
+<g transform="matrix(0.13 0 0 -0.13 540 575.16)"  >
+<path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(102,50,166); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  transform=" translate(-2440, -2446.96)" d="M 1360 2747 C 1360 2480 1362 2452 1378 2437 C 1387 2429 1616 2302 1885 2155 C 2155 2008 2390 1879 2407 1868 C 2447 1844 2374 1809 3013 2158 L 3520 2435 L 3520 2737 C 3520 2904 3516 3040 3512 3040 C 3507 3040 3267 2911 2979 2754 C 2691 2596 2450 2467 2445 2467 C 2439 2467 2198 2596 1908 2753 C 1619 2911 1377 3040 1371 3040 C 1363 3040 1360 2955 1360 2747 z" stroke-linecap="round" />
+</g>
+</svg>
