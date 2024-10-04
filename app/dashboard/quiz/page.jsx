@@ -2,13 +2,14 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { ClipboardIcon } from "lucide-react"; // Import Clipboard icon
 
-const page = () => {
+const Page = () => {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [responseData, setResponseData] = useState(""); // For displaying the generated quiz
-  const [numQuestions, setNumQuestions] = useState(20); // Default number of questions
-  const [difficulty, setDifficulty] = useState("easy"); // Default difficulty
+  const [questionArray, setQuestionArray] = useState([]);
+  const [numQuestions, setNumQuestions] = useState(20);
+  const [difficulty, setDifficulty] = useState("easy");
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -28,8 +29,13 @@ const page = () => {
     setLoading(true);
 
     const formData = new FormData();
-    // Update prompt with dynamic inputs
-    const prompt = `Generate ${numQuestions} Quiz MCQ Questions with ${difficulty} difficulty based on the PDF uploaded. Do not provide any text beautification on the generated text and don't give any introduction.`;
+    const prompt = `Generate ${numQuestions} Quiz MCQ Questions with ${difficulty} difficulty based on the PDF uploaded. Do not provide any text beautification on the generated text and don't give any introduction.
+    Put the questions in the format given below 
+    Question 1 : The question? 
+    a) ..
+    b) ..
+    c) ..
+    d) ..`;
 
     formData.append("question", prompt);
     formData.append(
@@ -54,26 +60,23 @@ const page = () => {
         requestOptions
       );
 
-      // Stream the response
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let resultText = "";
-      let contentArray = []; // Store the content values
+      let content = "";
+      let questions = [];
 
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
 
-        // Decode the chunked response
         resultText = decoder.decode(value, { stream: true });
-
-        // Try to parse the individual data objects
         const chunks = resultText.split("data: ").filter(Boolean);
         chunks.forEach((chunk) => {
           try {
-            const jsonData = JSON.parse(chunk); // Parse the chunk as JSON
+            const jsonData = JSON.parse(chunk);
             if (jsonData.content) {
-              contentArray.push(jsonData.content); // Push the 'content' value to the array
+              content += jsonData.content;
             }
           } catch (error) {
             console.error("Error parsing JSON chunk:", error);
@@ -81,7 +84,24 @@ const page = () => {
         });
       }
 
-      setResponseData(contentArray.join("\n")); // Display all content as a string
+      const splitContent = content.split("\n\n");
+      const questionArray = splitContent.map((question, index) => {
+        const lines = question.split("\n");
+        const questionString = lines[0].split(":")[1]?.trim();
+        const options = {
+          a: lines[1]?.trim() || "",
+          b: lines[2]?.trim() || "",
+          c: lines[3]?.trim() || "",
+          d: lines[4]?.trim() || "",
+        };
+        return {
+          question: questionString,
+          options: options,
+        };
+      });
+
+      setQuestionArray(questionArray);
+      console.log(questionArray);
     } catch (error) {
       console.error("Error during file upload or API request:", error);
       alert("There was an error generating the quiz. Please try again.");
@@ -90,27 +110,39 @@ const page = () => {
     }
   };
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(responseData);
-    alert("Quiz questions copied to clipboard!");
+  // Function to handle copying all questions and options to clipboard
+  const handleCopyAllToClipboard = () => {
+    const allQuestions = questionArray
+      .map((question, index) => {
+        return `${index + 1}. ${question.question}\nA) ${
+          question.options.a
+        }\nB) ${question.options.b}\nC) ${question.options.c}\nD) ${
+          question.options.d
+        }`;
+      })
+      .join("\n\n");
+
+    navigator.clipboard.writeText(allQuestions).then(() => {
+      alert("All questions and options copied to clipboard!");
+    });
   };
 
   return (
-    <div className="space-y-4">
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="flex flex-col items-center justify-center p-4 max-w-xl mx-auto">
+      <form onSubmit={handleSubmit} className="space-y-4 w-full">
         <Input
           type="file"
           onChange={handleFileChange}
-          className="border rounded-md p-2"
+          className="border rounded-md p-2 w-full"
         />
-        <div className="flex items-center space-x-2">
+        <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2 w-full">
           <Input
             type="number"
             value={numQuestions}
             onChange={handleNumQuestionsChange}
             min="1"
             placeholder="Number of Questions"
-            className="flex-grow border rounded-md p-2"
+            className="border rounded-md p-2 flex-grow"
           />
           <select
             value={difficulty}
@@ -127,15 +159,37 @@ const page = () => {
         </Button>
       </form>
 
-      {/* Display the result after streaming is complete */}
-      {responseData && (
-        <div className="mt-4">
-          <h3 className="text-lg font-semibold">Generated Quiz Questions:</h3>
-          <pre className="bg-gray-100 text-gray-800 p-4 rounded-md whitespace-pre-wrap">
-            {responseData}
-          </pre>
-          <Button onClick={handleCopy} className="mt-2 w-full">
-            Copy to Clipboard
+      {/* Display the questions after streaming is complete */}
+      {questionArray.length > 0 && (
+        <div className="mt-6 w-full">
+          <h3 className="text-lg font-semibold mb-4 text-center">
+            Generated Quiz Questions:
+          </h3>
+          <div className="space-y-6 h-96 overflow-y-auto border p-4 rounded-md">
+            {questionArray.map((question, index) => (
+              <div key={index} className=" p-4 rounded-md shadow">
+                <p className="font-semibold">{`${index + 1}. ${
+                  question.question
+                }`}</p>
+                <div className="grid grid-cols-1 gap-2 mt-2">
+                  {Object.entries(question.options).map(([key, value]) => (
+                    <label key={key} className="flex items-center space-x-2">
+                      <input
+                        type="radio"
+                        name={`question-${index}`}
+                        value={key}
+                      />
+                      <span>{` ${value}`}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+          {/* Button to copy all questions and options */}
+          <Button onClick={handleCopyAllToClipboard} className="mt-4">
+            <ClipboardIcon className="h-5 w-5 mr-2" />
+            Copy All Questions
           </Button>
         </div>
       )}
@@ -143,4 +197,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

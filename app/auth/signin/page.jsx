@@ -1,14 +1,14 @@
 "use client";
 import React from "react";
-import { Card, CardHeader } from "@/components/ui/Card"; // Import Card component
-import { Button } from "@/components/ui/button"; // Adjust import paths accordingly
-import { Input } from "@/components/ui/Input"; // Adjust import paths accordingly
-import { Label } from "@/components/ui/Label"; // Adjust import paths accordingly
+import { Card, CardHeader } from "@/components/ui/Card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { useRouter } from "next/navigation"; // Import useRouter for redirection
+import { useRouter } from "next/navigation";
 
 export default function SignInPage() {
-  const router = useRouter(); // Initialize useRouter
+  const router = useRouter();
 
   // Mock API call function
   const mockApiCall = async (email, password) => {
