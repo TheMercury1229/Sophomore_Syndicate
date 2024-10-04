@@ -1,10 +1,9 @@
 "use client"; // Ensures this component is treated as a client component
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 
-const UploadForm = () => {
+const page = () => {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [responseData, setResponseData] = useState(""); // For displaying the generated quiz
@@ -91,36 +90,57 @@ const UploadForm = () => {
     }
   };
 
+  const handleCopy = () => {
+    navigator.clipboard.writeText(responseData);
+    alert("Quiz questions copied to clipboard!");
+  };
+
   return (
-    <Card>
-      <form onSubmit={handleSubmit}>
-        <Input type="file" onChange={handleFileChange} />
+    <div className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4">
         <Input
-          type="number"
-          value={numQuestions}
-          onChange={handleNumQuestionsChange}
-          min="1"
-          placeholder="Number of Questions"
+          type="file"
+          onChange={handleFileChange}
+          className="border rounded-md p-2"
         />
-        <select value={difficulty} onChange={handleDifficultyChange}>
-          <option value="easy">Easy</option>
-          <option value="medium">Medium</option>
-          <option value="hard">Hard</option>
-        </select>
-        <Button type="submit" disabled={loading}>
+        <div className="flex items-center space-x-2">
+          <Input
+            type="number"
+            value={numQuestions}
+            onChange={handleNumQuestionsChange}
+            min="1"
+            placeholder="Number of Questions"
+            className="flex-grow border rounded-md p-2"
+          />
+          <select
+            value={difficulty}
+            onChange={handleDifficultyChange}
+            className="border rounded-md p-2"
+          >
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+        </div>
+        <Button type="submit" disabled={loading} className="w-full">
           {loading ? "Generating Quiz..." : "Upload PDF"}
         </Button>
       </form>
 
       {/* Display the result after streaming is complete */}
       {responseData && (
-        <div>
-          <h3>Generated Quiz Questions:</h3>
-          <pre>{responseData}</pre>
+        <div className="mt-4">
+          <h3 className="text-lg font-semibold">Generated Quiz Questions:</h3>
+          <pre className="bg-gray-100 text-gray-800 p-4 rounded-md whitespace-pre-wrap">
+            {responseData}
+          </pre>
+          <Button onClick={handleCopy} className="mt-2 w-full">
+            Copy to Clipboard
+          </Button>
         </div>
       )}
-    </Card>
+    </div>
   );
 };
 
-export default UploadForm;
+export default page;
