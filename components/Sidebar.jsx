@@ -7,8 +7,8 @@ import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet"; // Mo
 
 // Sidebar links configuration
 const sidebarLinks = [
-  { href: "/dashboard/teacher/home", label: "Home", icon: Home },
-  { href: "/dashboard/teacher/add-quiz", label: "Add Quiz", icon: FilePlus },
+  { href: "/", label: "Home", icon: Home },
+  { href: "/dashboard/quiz", label: "Add Quiz", icon: FilePlus },
   { href: "/dashboard/teacher/settings", label: "Settings", icon: Settings },
 ];
 
